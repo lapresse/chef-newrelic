@@ -12,6 +12,7 @@
 default['newrelic']['server_monitoring']['license'] = "CHANGE_ME"
 default['newrelic']['application_monitoring']['license'] = "CHANGE_ME"
 
+
 ################
 #ADVANCED CONFIG
 ################
@@ -25,6 +26,8 @@ default['newrelic']['server_monitoring']['ssl_ca_path'] = nil
 default['newrelic']['server_monitoring']['pidfile'] = nil
 default['newrelic']['server_monitoring']['collector_host'] = nil
 default['newrelic']['server_monitoring']['timeout'] = nil
+default['newrelic']['server_monitoring']['url_tar_linux'] = "http://download.newrelic.com/server_monitor/release/newrelic-sysmond-1.2.0.257-linux.tar.gz"
+default['newrelic']['server_monitoring']['user'] = "newrelic"
 
 #APPLICATION MONITORING
 default['newrelic']['application_monitoring']['enabled'] = nil
@@ -64,6 +67,8 @@ default['newrelic']['application_monitoring']['webtransaction']['name']['files']
 
 #php setup specific
 default['newrelic']['startup_mode'] = "agent"
+default['newrelic']['phpagent']['url_tar_linux'] = 'http://download.newrelic.com/php_agent/release/newrelic-php5-3.2.5.143-linux.tar.gz'
+
 #python setup specific
 default['newrelic']['python_version'] = "latest"
 

@@ -5,11 +5,15 @@
 # Copyright 2012, Escape Studios
 #
 
-#install the server monitor
-package "newrelic-sysmond" do
-	action :install
+case node[:platform]
+when "debian", "ubuntu", "redhat", "centos", "fedora", "scientific", "amazon"
+  #install the server monitor
+  package "newrelic-sysmond" do
+    action :install
+  end
+when "suse"
+  include_recipe "newrelic::server-monitor-install"
 end
-
 #configure your New Relic license key
 template "/etc/newrelic/nrsysmond.cfg" do
 	source "nrsysmond.cfg.erb"

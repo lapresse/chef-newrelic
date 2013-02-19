@@ -10,23 +10,33 @@ include_recipe "php"
 include_recipe "apache2"
 include_recipe "apache2::mod_php5"
 
-#the older version (3.0) had a bug in the init scripts that when it shut down the daemon it would also kill dpkg as it was trying to upgrade
-#let's remove the old packages before continuing
-package "newrelic-php5" do
-	action :remove
-	version "3.0.5.95"
-end
 
-#install/update latest php agent
-package "newrelic-php5" do
-	action :upgrade
-end
 
-#run newrelic-install
-execute "newrelic-install" do
-	command "newrelic-install install"
-	action :run
-	notifies :restart, "service[apache2]", :delayed
+case node[:platform]
+when "debian", "ubuntu", "redhat", "centos", "fedora", "scientific", "amazon"
+  #the older version (3.0) had a bug in the init scripts that when it shut down the daemon it would also kill dpkg as it was trying to upgrade
+  #let's remove the old packages before continuing
+  package "newrelic-php5" do
+    action :remove
+    version "3.0.5.95"
+  end
+
+  #install/update latest php agent
+  package "newrelic-php5" do
+    action :upgrade
+  end
+
+  #run newrelic-install
+  execute "newrelic-install" do
+    command "newrelic-install install"
+    action :run
+    notifies :restart, "service[apache2]", :delayed
+  end
+when "suse" 
+  # Handle generic installation with the tar.gz installer
+  # Only tested under SLES/Suse but should work with other distributions
+  # Other OS (BSD, mac) might work with similar actions
+  include_recipe "newrelic::php-agent-install"
 end
 
 service "newrelic-daemon" do
