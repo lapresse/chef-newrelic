@@ -9,6 +9,7 @@
 tarname = 'nrp-php5.tar.gz'
 phpagent_tar = "#{Chef::Config[:file_cache_path]}/#{tarname}"  
 untardir = "#{Chef::Config[:file_cache_path]}/newrelic-php5-latest" 
+pkgname = node['newrelic']['phpagent']['pkg_tar_linux'].gsub /.tar.gz/, ''
 
 remote_file phpagent_tar do
   source node['newrelic']['phpagent']['url_tar_linux'] 
@@ -38,10 +39,12 @@ execute "newrelic-untar-phpagent" do
 end
 
 # Installer needs more options to run silently in manual mode
-execute "newrelic-untar-phpagent" do
-  cwd untardir
+execute "newrelic-install-phpagent" do
+  not_if {File.exists '/usr/bin/newrelic-daemon' }
+  # Make sure we find the correct PHP path
+  environment ({ "PATH" => "#{ENV['PATH']}:#{node['newrelic']['php_path']}" })
+  cwd "#{untardir}/#{pkgname}"
   command "export NR_INSTALL_SILENT=1 NR_INSTALL_KEY=#{node['newrelic']['application_monitoring']['license']}; ./newrelic-install install"
-  action :nothing
   notifies :restart, "service[apache2]", :delayed
 end
 

@@ -12,6 +12,15 @@
 default['newrelic']['server_monitoring']['license'] = "CHANGE_ME"
 default['newrelic']['application_monitoring']['license'] = "CHANGE_ME"
 
+# Don't run php and apache2 recipe by default.
+# Since they are 'recommended' in metadata and users of this cookbook
+# may have installed php in another way
+default['newrelic']['include_recipe_php'] = false
+default['newrelic']['include_recipe_apache2'] = false
+
+# Use this to force the path to your PHP install if it,s not in your system path
+default['newrelic']['php_path'] = nil 
+
 
 ################
 #ADVANCED CONFIG
@@ -67,7 +76,8 @@ default['newrelic']['application_monitoring']['webtransaction']['name']['files']
 
 #php setup specific
 default['newrelic']['startup_mode'] = "agent"
-default['newrelic']['phpagent']['url_tar_linux'] = 'http://download.newrelic.com/php_agent/release/newrelic-php5-3.2.5.143-linux.tar.gz'
+default['newrelic']['phpagent']['pkg_tar_linux'] = 'newrelic-php5-3.2.5.143-linux.tar.gz'
+default['newrelic']['phpagent']['url_tar_linux'] = "http://download.newrelic.com/php_agent/release/#{node['newrelic']['phpagent']['pkg_tar_linux']}"
 
 #python setup specific
 default['newrelic']['python_version'] = "latest"

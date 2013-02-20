@@ -5,12 +5,47 @@
 # Copyright 2012, Escape Studios
 #
 
-# Execute apache2 receipe + mod_php5 receipe
-include_recipe "php"
-include_recipe "apache2"
-include_recipe "apache2::mod_php5"
+# Optionnaly execute apache2 recipe + mod_php5 recipe
 
-
+if node['newrelic']['include_recipe_php'] 
+  #  You need to set the attribute ['php']['ext_conf_dir'] 
+  #  if you don't use the php recipe
+  include_recipe "php"
+end
+if node['newrelic']['include_recipe_apache2']
+  include_recipe "apache2"
+  include_recipe "apache2::mod_php5"
+else
+  # extracted from apache2 cookbook
+  service "apache2" do
+    case node['platform_family']
+    when "rhel", "fedora"
+      service_name "httpd"
+      # If restarted/reloaded too quickly httpd has a habit of failing.
+      # This may happen with multiple recipes notifying apache to restart - like
+      # during the initial bootstrap.
+      restart_command "/sbin/service httpd restart && sleep 1"
+      reload_command "/sbin/service httpd reload && sleep 1"
+    when "suse"
+      service_name "apache2"
+      # If restarted/reloaded too quickly httpd has a habit of failing.
+      # This may happen with multiple recipes notifying apache to restart - like
+      # during the initial bootstrap.
+      restart_command "/sbin/service apache2 restart && sleep 1"
+      reload_command "/sbin/service apache2 reload && sleep 1"
+    when "debian"
+      service_name "apache2"
+      restart_command "/usr/sbin/invoke-rc.d apache2 restart && sleep 1"
+      reload_command "/usr/sbin/invoke-rc.d apache2 reload && sleep 1"
+    when "arch"
+      service_name "httpd"
+    when "freebsd"
+      service_name "apache22"
+    end
+    supports [:restart, :reload, :status]
+    action :enable
+  end
+end
 
 case node[:platform]
 when "debian", "ubuntu", "redhat", "centos", "fedora", "scientific", "amazon"
