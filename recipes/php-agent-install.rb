@@ -40,7 +40,7 @@ end
 
 # Installer needs more options to run silently in manual mode
 execute "newrelic-install-phpagent" do
-  not_if {File.exists '/usr/bin/newrelic-daemon' }
+  not_if {File.exist? '/usr/bin/newrelic-daemon' }
   # Make sure we find the correct PHP path
   environment ({ "PATH" => "#{ENV['PATH']}:#{node['newrelic']['php_path']}" })
   cwd "#{untardir}/#{pkgname}"
