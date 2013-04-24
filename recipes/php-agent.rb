@@ -65,7 +65,7 @@ when "debian", "ubuntu", "redhat", "centos", "fedora", "scientific", "amazon"
   execute "newrelic-install" do
     command "newrelic-install install"
     action :run
-    notifies :restart, "service[apache2]", :delayed
+    notifies :reload, "service[apache2]", :delayed
   end
 when "suse" 
   # Handle generic installation with the tar.gz installer
@@ -76,7 +76,7 @@ end
 
 service "newrelic-daemon" do
   supports :status => true, :start => true, :stop => true, :restart => true
-  notifies :restart, "service[apache2]", :delayed
+  notifies :reload, "service[apache2]", :delayed
 end
 
 #https://newrelic.com/docs/php/newrelic-daemon-startup-modes
@@ -147,7 +147,7 @@ if node[:newrelic][:startup_mode] == "agent"
 			:webtransaction_name_files => node[:newrelic][:application_monitoring][:webtransaction][:name][:files]
 		)
 		action :create
-		notifies :restart, "service[apache2]", :delayed
+		notifies :reload, "service[apache2]", :delayed
 	end
 else
 	#external startup mode
