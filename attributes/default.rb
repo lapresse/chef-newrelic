@@ -2,13 +2,13 @@
 # Cookbook Name:: newrelic
 # Attributes:: default
 #
-# Copyright 2012, Escape Studios
+# Copyright 2012-2013, Escape Studios
 #
 
 #############
 #BASIC CONFIG
 #############
-#LICENSE(S)
+#license(s)
 default['newrelic']['server_monitoring']['license'] = "CHANGE_ME"
 default['newrelic']['application_monitoring']['license'] = "CHANGE_ME"
 
@@ -25,7 +25,7 @@ default['newrelic']['php_path'] = nil
 ################
 #ADVANCED CONFIG
 ################
-#SERVER MONITORING
+#server monitoring
 default['newrelic']['server_monitoring']['logfile'] = nil
 default['newrelic']['server_monitoring']['loglevel'] = nil
 default['newrelic']['server_monitoring']['proxy'] = nil
@@ -35,10 +35,11 @@ default['newrelic']['server_monitoring']['ssl_ca_path'] = nil
 default['newrelic']['server_monitoring']['pidfile'] = nil
 default['newrelic']['server_monitoring']['collector_host'] = nil
 default['newrelic']['server_monitoring']['timeout'] = nil
-default['newrelic']['server_monitoring']['url_tar_linux'] = "http://download.newrelic.com/server_monitor/release/newrelic-sysmond-1.2.0.257-linux.tar.gz"
-default['newrelic']['server_monitoring']['user'] = "newrelic"
+default['newrelic']['server_monitoring']['windows_version'] = "2.0.0.198"
+default['newrelic']['server_monitoring']['windows64_checksum'] = "5a8f3f5e8f15997463430401756d377c321c8899c2790ca85e5587a5b643651e"
+default['newrelic']['server_monitoring']['windows32_checksum'] = "ac2b65eecaad461fdd2e4386e3e4c9f96ea940b35bdf7a8c532c21dbd1c99ff0"
 
-#APPLICATION MONITORING
+#application monitoring
 default['newrelic']['application_monitoring']['enabled'] = nil
 default['newrelic']['application_monitoring']['logfile'] = nil
 default['newrelic']['application_monitoring']['loglevel'] = nil
@@ -73,13 +74,3 @@ default['newrelic']['application_monitoring']['framework'] = nil
 default['newrelic']['application_monitoring']['webtransaction']['name']['remove_trailing_path'] = nil
 default['newrelic']['application_monitoring']['webtransaction']['name']['functions'] = nil
 default['newrelic']['application_monitoring']['webtransaction']['name']['files'] = nil
-
-#php setup specific
-default['newrelic']['startup_mode'] = "agent"
-default['newrelic']['phpagent']['pkg_tar_linux'] = 'newrelic-php5-3.2.5.143-linux.tar.gz'
-default['newrelic']['phpagent']['url_tar_linux'] = "http://download.newrelic.com/php_agent/release/#{node['newrelic']['phpagent']['pkg_tar_linux']}"
-
-#python setup specific
-default['newrelic']['python_version'] = "latest"
-
-default['newrelic']['repository_key'] = "548C16BF"
