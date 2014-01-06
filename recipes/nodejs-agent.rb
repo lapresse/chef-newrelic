@@ -14,7 +14,7 @@ include_recipe "nodejs::npm"
 node['newrelic']['nodejs']['apps'].each do |nodeapp|
   execute "npm-install-nodejs-agent" do
     #not_if ""
-    # creates 
+    # creates
     cwd nodeapp['app_path']
     command "npm install newrelic"
   end
