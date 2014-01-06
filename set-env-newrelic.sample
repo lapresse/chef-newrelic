@@ -1,0 +1,2 @@
+export NEWRELIC_LICENSE_KEY="set-your-license-key-here"
+
