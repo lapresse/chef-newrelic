@@ -1,10 +1,12 @@
 name             "newrelic"
 maintainer       "Escape Studios"
-maintainer_email "dev@escapestudios.com"
+#maintainer_email "dev@escapestudios.com"
+maintainer_email "webops@lapresse.ca"
 license          "MIT"
 description      "Installs/Configures New Relic"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "0.5.6"
+# Bumped the version from 0.x.y to 10.x.y to make sure we never switch accidentaly to upstream version
+version          "10.5.6"
 
 %w{ debian ubuntu redhat centos fedora scientific amazon windows smartos }.each do |os|
 supports os
